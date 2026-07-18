@@ -45,11 +45,11 @@
 
 一张完整的信息画报，整合了全部关键数据和可视化。点击查看大图：
 
-![Soundcore Guard Infographic](assets/charts/soundcore-guard-infographic.png)
+![Soundcore Guard Infographic](assets/charts/soundcore-guard-poster.png)
 
-**画报包含 10 大模块**：方法论对比 · 机会信号 · 竞品矩阵 · 用户洞察 · 技术架构 · 商业模式 · 产品路线图 · AI原生vs传统对比 · 数据飞轮 · 关键指标
+**海报包含 7 大叙事模块**：核心问题 · 方法改变答案 · 五类机会信号 · 竞品矩阵 · 用户洞察 · 技术架构 · 商业与飞轮模型
 
-> 生成脚本：`assets/charts/generate_infographic.py`（可复现）
+> 生成脚本：`assets/charts/generate_poster.py`（可复现）
 
 ---
 
