@@ -41,69 +41,15 @@
 
 ---
 
-## 📊 可视化数据看板
+## 📊 信息画报
 
-所有图表均从文档中的真实数据/模拟数据生成，保存在 `assets/charts/`。
+一张完整的信息画报，整合了全部关键数据和可视化。点击查看大图：
 
-### 1. 方法论对比：传统 vs AI 原生
+![Soundcore Guard Infographic](assets/charts/soundcore-guard-infographic.png)
 
-![01-methodology-comparison](assets/charts/01-methodology-comparison.png)
+**画报包含 10 大模块**：方法论对比 · 机会信号 · 竞品矩阵 · 用户洞察 · 技术架构 · 商业模式 · 产品路线图 · AI原生vs传统对比 · 数据飞轮 · 关键指标
 
-### 2. 机会信号交叉验证
-
-![02-opportunity-signals](assets/charts/02-opportunity-signals.png)
-
-### 3. 竞争定位矩阵：听力健康 × 价格
-
-![03-competitive-matrix](assets/charts/03-competitive-matrix.png)
-
-### 4. 用户洞察：购买意愿 + NPS + 功能优先级
-
-![04-user-insights](assets/charts/04-user-insights.png)
-
-### 5. 技术架构：Soundcore Guard 系统架构
-
-![05-tech-architecture](assets/charts/05-tech-architecture.png)
-
-### 6. 商业模式：3 年收入预测 + 单位经济
-
-![06-business-model](assets/charts/06-business-model.png)
-
-### 7. 产品路线图
-
-![07-product-roadmap](assets/charts/07-product-roadmap.png)
-
-### 8. 平行对比：AI 原生 vs 传统方法
-
-![08-comparison-table](assets/charts/08-comparison-table.png)
-
-### 9. 定价策略：价格-需求曲线 + 市场分布
-
-![09-pricing-strategy](assets/charts/09-pricing-strategy.png)
-
-### 10. 数据飞轮：核心护城河
-
-![10-data-flywheel](assets/charts/10-data-flywheel.png)
-
-### 11. BOM 成本结构
-
-![11-bom-waterfall](assets/charts/11-bom-waterfall.png)
-
-### 12. Conjoint Analysis 效用值
-
-![12-conjoint-analysis](assets/charts/12-conjoint-analysis.png)
-
-### 13. 市场增长趋势
-
-![13-market-growth](assets/charts/13-market-growth.png)
-
-### 14. 听力危机：问题与解方案
-
-![14-hearing-risk](assets/charts/14-hearing-risk.png)
-
-### 15. 订阅模型：收入飞轮
-
-![15-subscription-model](assets/charts/15-subscription-model.png)
+> 生成脚本：`assets/charts/generate_infographic.py`（可复现）
 
 ---
 
