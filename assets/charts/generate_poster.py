@@ -1,301 +1,388 @@
 #!/usr/bin/env python3
 """
-Soundcore Guard — 数据叙事海报最终版
-统一大标题、清晰叙事、不重叠、字号合理
+Soundcore Guard — AI 原生产品设计 · 数据海报
+统一设计语言：思源黑体 + 蓝/琥珀/绿配色，7板块从上至下有序展开
 """
 
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+from matplotlib.patches import FancyBboxPatch, Circle
+from matplotlib.font_manager import FontProperties
 import numpy as np
-from matplotlib.patches import FancyBboxPatch, Rectangle
-import os, warnings
-warnings.filterwarnings('ignore')
 
-plt.rcParams.update({
-    'font.family': 'sans-serif',
-    'font.sans-serif': ['DejaVu Sans', 'Arial', 'Helvetica'],
-    'axes.unicode_minus': False,
-    'figure.dpi': 200,
-    'savefig.dpi': 200,
-    'savefig.bbox': 'tight',
-    'savefig.pad_inches': 0.15,
-})
+# ============================================================
+# 全局设计参数
+# ============================================================
+DEEP_BLUE   = '#1a237e'
+TECH_BLUE   = '#1976D2'
+LIGHT_BLUE  = '#42A5F5'
+SKY_BLUE    = '#BBDEFB'
+AMBER       = '#FF8F00'
+GREEN       = '#2E7D32'
+LIGHT_GREEN = '#81C784'
+ORANGE      = '#E65100'
+RED         = '#C62828'
+DARK        = '#212121'
+GRAY        = '#616161'
+LIGHT_GRAY  = '#BDBDBD'
+BG          = '#F5F7FA'
+WHITE       = '#FFFFFF'
+CARD_BG     = '#FFFFFF'
 
-OUT = os.path.dirname(os.path.abspath(__file__))
+CN_REG = '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc'
+CN_BLD = '/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc'
 
-DARK    = '#111827'
-GRAY    = '#6B7280'
-LIGHT   = '#F8FAFC'
-WHITE   = '#FFFFFF'
-BLUE    = '#1A56DB'
-SKY     = '#0EA5E9'
-GREEN   = '#10B981'
-AMBER   = '#F59E0B'
-ORANGE  = '#F97316'
-PURPLE  = '#8B5CF6'
-RED     = '#EF4444'
-BLUE_L  = '#DBEAFE'
-GREEN_L = '#D1FAE5'
+def cn(size=11):
+    return FontProperties(fname=CN_REG, size=size)
 
+def cnb(size=11):
+    return FontProperties(fname=CN_BLD, size=size)
+
+FIG_W, FIG_H = 20, 30.5
+
+# ============================================================
+# 辅助函数
+# ============================================================
+def draw_card(ax, x, y, w, h, color=CARD_BG, edge=None, zorder=1):
+    box = FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.15", facecolor=color,
+                         edgecolor=edge or LIGHT_GRAY, linewidth=0.8, zorder=zorder)
+    ax.add_patch(box)
+
+def draw_section_header(ax, y, number, title, subtitle):
+    cx = 0.6
+    cy = y + 0.35
+    ax.add_patch(Circle((cx, cy), 0.32, facecolor=DEEP_BLUE, zorder=3))
+    ax.text(cx, cy, str(number), fontproperties=cnb(12), color=WHITE, ha='center', va='center', zorder=4)
+    ax.text(1.1, y+0.42, title, fontproperties=cnb(17), color=DEEP_BLUE, ha='left', va='center')
+    ax.text(1.1, y+0.02, subtitle, fontproperties=cn(10), color=GRAY, ha='left', va='center')
+
+def draw_metric_card(ax, x, y, w, h, value, label, color=TECH_BLUE):
+    draw_card(ax, x, y, w, h, edge=color, color=WHITE)
+    ax.text(x+w/2, y+h*0.55, str(value), fontproperties=cnb(20), color=color, ha='center', va='center')
+    ax.text(x+w/2, y+h*0.22, label, fontproperties=cn(9), color=DARK, ha='center', va='center')
+
+# ============================================================
 # 创建画布
-fig = plt.figure(figsize=(24, 40), facecolor=LIGHT)
-ax = fig.add_subplot(111)
-ax.set_xlim(0, 24)
-ax.set_ylim(0, 40)
+# ============================================================
+fig, ax = plt.subplots(figsize=(FIG_W, FIG_H))
+ax.set_xlim(0, FIG_W)
+ax.set_ylim(0, FIG_H)
+ax.set_aspect('equal')
 ax.axis('off')
+ax.add_patch(plt.Rectangle((0, 0), FIG_W, FIG_H, facecolor=BG, zorder=0))
 
-# ═══════════════════════════════════
-# 1. 大标题
-# ═══════════════════════════════════
-ax.add_patch(FancyBboxPatch((0.5, 38.0), 23, 1.8, boxstyle="round,pad=0.15", facecolor=DARK, edgecolor='none'))
-ax.text(12, 39.1, 'Soundcore Guard', fontsize=48, fontweight='bold', color=WHITE, ha='center', va='center')
-ax.text(12, 38.35, 'An AI-Native Product Design Experiment for Anker Soundcore', fontsize=15, color='#93C5FD', ha='center', va='center')
+# ============================================================
+# 顶部标题栏
+# ============================================================
+ax.add_patch(plt.Rectangle((0, 29.6), FIG_W, 0.9, facecolor=DEEP_BLUE, zorder=1))
+ax.text(0.5, 30.3, 'SOUNDCORE × AI-NATIVE DESIGN', fontproperties=cnb(10), color=LIGHT_BLUE, va='center')
+ax.text(0.5, 29.95, '不止听歌——你的个人听觉管家', fontproperties=cnb(24), color=WHITE, va='center')
+ax.text(0.5, 29.6, 'AI 原生产品设计方法 × Soundcore Guard 听力守护 TWS 耳机', fontproperties=cn(12), color=SKY_BLUE, va='center')
 
-# ═══════════════════════════════════
-# 2. 核心问题
-# ═══════════════════════════════════
-ax.text(12, 37.3, 'The Core Question', fontsize=20, fontweight='bold', color=DARK, ha='center')
-ax.add_patch(FancyBboxPatch((1.5, 35.5), 21, 1.5, boxstyle="round,pad=0.15", facecolor=BLUE_L, edgecolor=BLUE, linewidth=2, alpha=0.8))
-ax.text(12, 36.35, 'What happens when we replace "PM intuition + small surveys" with AI acting as', fontsize=14, color=DARK, ha='center', style='italic')
-ax.text(12, 35.85, 'Brain Trust, User Avatars, and Expert Panel — and let them define a product from scratch?', fontsize=14, color=DARK, ha='center', style='italic')
-ax.text(12, 35.05, 'A product direction that experience-driven methods alone would not have found.', fontsize=15, fontweight='bold', color=BLUE, ha='center')
+# ============================================================
+# 板块 1：核心命题
+# ============================================================
+TOP_Y = 28.5
+SEC_Y = 24.0
+HEIGHT = 4.5
+draw_section_header(ax, SEC_Y+HEIGHT-0.55, '01', '核心命题：方法改变答案', '同一个命题，两种方法，两个完全不同的方案')
 
-# ═══════════════════════════════════
-# 3. 方法论对比
-# ═══════════════════════════════════
-ax.text(12, 34.3, 'Method Changed the Answer', fontsize=20, fontweight='bold', color=DARK, ha='center')
+# 传统方法卡片
+T1_X, T1_W = 0.5, 8.5
+T1_H = 2.2
+draw_card(ax, T1_X, SEC_Y+HEIGHT-T1_H-0.55, T1_W, T1_H, edge=LIGHT_GRAY)
+Y1 = SEC_Y+HEIGHT-T1_H-0.55
+ax.text(T1_X+0.25, Y1+T1_H-0.3, '传统经验驱动方法', fontproperties=cnb(13), color=GRAY)
+ax.text(T1_X+0.25, Y1+T1_H-0.75, 'Soundcore Pro：更好的降噪 + AI 翻译', fontproperties=cn(11), color=DARK)
+ax.text(T1_X+0.25, Y1+T1_H-1.15, '本质：Me-too 跟随策略', fontproperties=cn(10), color=RED)
+ax.text(T1_X+0.25, Y1+T1_H-1.5, '定价 $149–179 | 差异化靠参数（可被追上）', fontproperties=cn(9), color=GRAY)
+ax.text(T1_X+0.25, Y1+T1_H-1.85, '决策依据：PM 个人经验 + 竞品对标', fontproperties=cn(9), color=GRAY)
 
-# 传统方法
-ax.add_patch(FancyBboxPatch((1.5, 32.0), 10.5, 2.0, boxstyle="round,pad=0.15", facecolor='#FEF2F2', edgecolor=RED, linewidth=1.5))
-ax.text(6.75, 33.7, 'Traditional Experience-Driven', fontsize=13, fontweight='bold', color=RED, ha='center')
-steps_t = ['PM\nExperience', 'Small\nSurvey', 'Manual\nTracking', 'Boss\nDecides']
-for i, s in enumerate(steps_t):
-    x = 2.4 + i * 1.9
-    ax.add_patch(FancyBboxPatch((x-0.7, 32.3), 1.4, 0.9, boxstyle="round,pad=0.06", facecolor=RED, edgecolor=WHITE, linewidth=1.2))
-    ax.text(x, 32.75, s, fontsize=8, fontweight='bold', color=WHITE, ha='center', va='center')
-    if i < 3:
-        ax.annotate('', xy=(x+0.85, 32.75), xytext=(x+0.75, 32.75), arrowprops=dict(arrowstyle='->', color=RED, lw=1.5))
-ax.add_patch(FancyBboxPatch((8.2, 32.25), 3.2, 1.0, boxstyle="round,pad=0.1", facecolor=RED, edgecolor=WHITE, linewidth=1.5, alpha=0.18))
-ax.text(9.8, 32.75, '→ "Better ANC +\nAI Translate"\n(Me-too)', fontsize=8.5, fontweight='bold', color=RED, ha='center', va='center')
+# AI 方法卡片
+T2_X = T1_X + T1_W + 0.5
+T2_W = 10
+draw_card(ax, T2_X, SEC_Y+HEIGHT-T1_H-0.55, T2_W, T1_H, edge=TECH_BLUE)
+Y2 = SEC_Y+HEIGHT-T1_H-0.55
+ax.text(T2_X+0.25, Y2+T1_H-0.3, 'AI 原生方法', fontproperties=cnb(13), color=TECH_BLUE)
+ax.text(T2_X+0.25, Y2+T1_H-0.75, 'Soundcore Guard：平价预防性听力守护', fontproperties=cn(11), color=DARK)
+ax.text(T2_X+0.25, Y2+T1_H-1.15, '本质：品类创新 —— 开拓 $100 听力健康新赛道', fontproperties=cn(10), color=GREEN)
+ax.text(T2_X+0.25, Y2+T1_H-1.5, '定价 $99–129 | 差异化靠数据飞轮（越用越准）', fontproperties=cn(9), color=GRAY)
+ax.text(T2_X+0.25, Y2+T1_H-1.85, '决策依据：AI 智囊 → AI 用户替身 → AI 专家团 → 人类 PM', fontproperties=cn(9), color=GRAY)
 
-# AI原生方法
-ax.add_patch(FancyBboxPatch((12, 32.0), 10.5, 2.0, boxstyle="round,pad=0.15", facecolor=BLUE_L, edgecolor=BLUE, linewidth=1.5))
-ax.text(17.25, 33.7, 'AI-Native Method', fontsize=13, fontweight='bold', color=BLUE, ha='center')
-steps_ai = ['AI Brain\nTrust', 'AI User\nAvatars', 'AI Expert\nPanel', 'PM\nVerdict']
-colors_ai = [BLUE, SKY, GREEN, PURPLE]
-ai_xs = [13.0, 14.8, 16.4, 18.0, 20.6]
-for i, (step, ax_) in enumerate(zip(steps_ai, ai_xs)):
-    if i < 4:
-        ax.add_patch(FancyBboxPatch((ax_-0.7, 32.3), 1.4, 0.9, boxstyle="round,pad=0.06", facecolor=colors_ai[i], edgecolor=WHITE, linewidth=1.2))
-        ax.text(ax_, 32.75, step, fontsize=8, fontweight='bold', color=WHITE, ha='center', va='center')
-        if i < 3:
-            ax.annotate('', xy=(ax_+0.85, 32.75), xytext=(ax_+0.75, 32.75), arrowprops=dict(arrowstyle='->', color=BLUE, lw=1.5))
-    else:
-        ax.add_patch(FancyBboxPatch((ax_-1.25, 32.25), 2.5, 1.0, boxstyle="round,pad=0.1", facecolor=BLUE, edgecolor=WHITE, linewidth=1.5, alpha=0.18))
-        ax.text(ax_, 32.75, '→ "Personal Hearing\nGuardian" (New\nCategory)', fontsize=8.5, fontweight='bold', color=BLUE, ha='center', va='center')
+# 工作流独立一行
+flow_y = SEC_Y + 0.35
+steps = ['AI 智囊\n全网信号', 'AI 替身\n500 用户', 'AI 专家\n可行性', '人类 PM\n裁决', '产品\n方案']
+for i, s in enumerate(steps):
+    fx = 2.5 + i * 3.4
+    draw_card(ax, fx, flow_y, 2.8, 1.0, edge=TECH_BLUE, color=SKY_BLUE)
+    ax.text(fx+1.4, flow_y+0.5, s, fontproperties=cnb(9), color=DEEP_BLUE, ha='center', va='center')
+    if i < len(steps)-1:
+        ax.annotate('', xy=(fx+3.0, flow_y+0.5), xytext=(fx+2.8, flow_y+0.5),
+                    arrowprops=dict(arrowstyle='->', color=TECH_BLUE, lw=1.5))
 
-ax.text(12, 31.45, 'Key Difference: Experience-driven → "Better specs" (me-too)  |  AI-native → "New category" (preventive hearing guardian)', fontsize=10, color=DARK, ha='center',
-        bbox=dict(boxstyle='round,pad=0.3', facecolor=LIGHT, edgecolor=GRAY, lw=0.5))
-
-# ═══════════════════════════════════
-# 4. 五大信号
-# ═══════════════════════════════════
-ax.text(12, 30.6, 'How AI Found the White Space: Five Converging Signals', fontsize=20, fontweight='bold', color=DARK, ha='center')
+# ============================================================
+# 板块 2：五大市场信号
+# ============================================================
+SEC_Y = 19.8
+HEIGHT = 4.0
+draw_section_header(ax, SEC_Y+HEIGHT-0.55, '02', '五大信号 -> 被忽视的市场空白', 'AI 智囊从全网数据中发现的 5 个关键信号，传统经验方法全部遗漏')
 
 signals = [
-    ('WHO Report', '1B+ youth at risk of hearing loss', '★★★★★', BLUE),
-    ('Apple\'s Move', 'AirPods Pro → FDA OTC Hearing Aid', '★★★★★', RED),
-    ('Market Data', 'Smart hearing protection $1.26B → $3.25B', '★★★★☆', GREEN),
-    ('Social Trend', '#HearingDamage trending on Weibo', '★★★★☆', ORANGE),
-    ('User Pain', '72% discomfort from long earbud use', '★★★☆☆', PURPLE),
+    ('① 全球听力危机', '12 亿', '人面临听力损失风险',
+     'WHO 2024：全球 1/4 人口\n2050 年前将出现听力问题'),
+    ('② TWS 市场饱和', '23%', 'CAGR',
+     '传统降噪/音质赛道拥挤\n"健康音频"增速远超整体'),
+    ('③ Apple 已验证赛道', '$249+', '仅高端覆盖',
+     'AirPods Pro 2 获 FDA\n临床级助听认证，但大众空白'),
+    ('④ Z 世代健康焦虑', '+180%', '搜索增长',
+     '年轻人从"被动修复"\n转向"主动预防"听力损伤'),
+    ('⑤ 听力 App 缺硬件', '8000 万', '年下载量',
+     '听力检测 App 需求旺盛\n但没有硬件闭环持续监测'),
 ]
-for i, (title, desc, stars, color) in enumerate(signals):
-    x = 2.5 + i * 4.2
-    ax.add_patch(FancyBboxPatch((x-1.8, 27.8), 3.6, 2.5, boxstyle="round,pad=0.12", facecolor=color, edgecolor=WHITE, linewidth=2, alpha=0.08))
-    ax.text(x, 29.8, title, fontsize=12, fontweight='bold', color=color, ha='center')
-    ax.text(x, 28.85, desc, fontsize=9, color=DARK, ha='center', va='center', wrap=True)
-    ax.text(x, 28.0, stars, fontsize=11, color=color, ha='center')
 
-ax.add_patch(FancyBboxPatch((2, 26.8), 20, 0.7, boxstyle="round,pad=0.1", facecolor=GREEN_L, edgecolor=GREEN, linewidth=2))
-ax.text(12, 27.15, '✦  Five independent signals converge → High-confidence opportunity: "Affordable preventive hearing guardian"',
-        fontsize=11, fontweight='bold', color=GREEN, ha='center')
+for i, (title, big_num, unit, desc) in enumerate(signals):
+    sx = 0.5 + i * 3.9
+    sw = 3.6
+    sh = 3.0
+    draw_card(ax, sx, SEC_Y, sw, sh, edge=TECH_BLUE)
+    ax.text(sx+sw/2, SEC_Y+sh-0.35, title, fontproperties=cnb(10), color=DEEP_BLUE, ha='center')
+    ax.text(sx+sw/2, SEC_Y+sh-1.4, big_num, fontproperties=cnb(26), color=AMBER, ha='center')
+    ax.text(sx+sw/2, SEC_Y+sh-1.95, unit, fontproperties=cn(10), color=GRAY, ha='center')
+    ax.text(sx+sw/2, SEC_Y+0.55, desc, fontproperties=cn(8), color=DARK, ha='center', va='bottom')
 
-# ═══════════════════════════════════
-# 5. 竞品矩阵（左侧）
-# ═══════════════════════════════════
-ax4 = fig.add_axes([0.03, 0.395, 0.45, 0.23])
-ax4.set_xlim(50, 340)
-ax4.set_ylim(-0.5, 10.5)
-comps = [
-    (249, 9.5, 'Apple\nAirPods Pro', 600, DARK),
-    (199, 3.0, 'Samsung\nBuds3', 350, GRAY),
-    (279, 1.5, 'Sony\nWF-1000XM5', 300, GRAY),
-    (299, 1.0, 'Bose\nQC Ultra', 280, GRAY),
-    (169, 1.0, 'Huawei\nFreeBuds', 250, GRAY),
-    (149, 0.5, 'iFLYTEK\nNano+', 180, GRAY),
-    (79, 0.0, 'Xiaomi\nAir 2', 180, GRAY),
-    (99, 8.0, '★ Guard', 500, BLUE),
-    (129, 8.5, '★ Guard Pro', 400, AMBER),
+# ============================================================
+# 板块 3：竞品定位矩阵
+# ============================================================
+SEC_Y = 15.2
+HEIGHT = 4.5
+draw_section_header(ax, SEC_Y+HEIGHT-0.55, '03', '竞品定位：$100 预防级听力健康 = 真空地带', '没有品牌在平价区间提供预防性听力健康功能')
+
+SCATTER_X, SCATTER_W = 0.5, 11.5
+SCATTER_H = 3.5
+draw_card(ax, SCATTER_X, SEC_Y, SCATTER_W, SCATTER_H)
+
+px0, py0 = SCATTER_X+1.5, SEC_Y+0.7
+pw, ph = 9.0, 2.2
+
+for gy in [py0, py0+ph/2, py0+ph]:
+    ax.plot([px0, px0+pw], [gy, gy], color=LIGHT_GRAY, lw=0.4, zorder=2)
+for gx in [px0, px0+pw/3, px0+2*pw/3, px0+pw]:
+    ax.plot([gx, gx], [py0, py0+ph], color=LIGHT_GRAY, lw=0.4, zorder=2)
+
+ax.text(px0+pw/2, py0-0.4, '价格 ($)', fontproperties=cn(9), color=GRAY, ha='center')
+ax.text(px0-0.75, py0+ph/2, '听力健康深度', fontproperties=cn(9), color=GRAY, va='center', rotation=90)
+for tx, tl in [(px0, '50'), (px0+pw, '350'), (px0+pw/3, '150'), (px0+2*pw/3, '250')]:
+    ax.text(tx, py0-0.18, tl, fontproperties=cn(7), color=LIGHT_GRAY, ha='center')
+ax.text(px0-0.35, py0, '无', fontproperties=cn(7), color=LIGHT_GRAY, ha='right', va='center')
+ax.text(px0-0.35, py0+ph, '临床级', fontproperties=cn(7), color=LIGHT_GRAY, ha='right', va='center')
+
+competitors = [
+    (50, 0.05, '杂牌耳机', GRAY),
+    (279, 0.05, 'Sony WF', GRAY),
+    (199, 0.2, 'Samsung Buds', LIGHT_GRAY),
+    (249, 0.95, 'Apple AirPods Pro 2', DARK),
+    (350, 0.9, 'Bose QC Ultra', GRAY),
+    (99, 0.55, 'Soundcore Guard', TECH_BLUE),
 ]
-for px, py, name, size, color in comps:
-    is_guard = 'Guard' in name
-    ax4.scatter(px, py, s=size, c=color, alpha=1.0 if is_guard else 0.4,
-               edgecolors=BLUE if is_guard else WHITE, linewidth=2.5 if is_guard else 1, zorder=10 if is_guard else 2)
-    off = -16 if is_guard else 13
-    ax4.annotate(name, (px, py), textcoords="offset points", xytext=(0, off),
-                ha='center', fontsize=7, fontweight='bold' if is_guard else 'normal',
-                color=BLUE if is_guard else GRAY)
+for price, depth, name, color in competitors:
+    cx = px0 + (price-30)/340 * pw
+    cy = py0 + depth * ph
+    msize = 400 if name == 'Soundcore Guard' else 120
+    ax.scatter(cx, cy, s=msize, c=color, zorder=5, edgecolors=WHITE, linewidths=1)
+    ax.text(cx, cy+ph*0.13, name, fontproperties=cnb(8) if name == 'Soundcore Guard' else cn(7),
+            ha='center', va='bottom', color=color)
 
-ws_rect = Rectangle((75, 4.5), 85, 5.5, facecolor=BLUE, alpha=0.06, edgecolor=BLUE, linestyle='--', linewidth=1.5, zorder=0)
-ax4.add_patch(ws_rect)
-ax4.text(117, 9.3, 'WHITE SPACE\n$99-129 Hearing Health\n→ Zero Competition', ha='center', fontsize=9, fontweight='bold', color=BLUE)
-ax4.text(270, 10, 'Medical-grade\n$249+ iOS only', fontsize=7, color=GRAY, ha='center')
-ax4.text(120, 1, 'No hearing features\nPrice war zone', fontsize=7, color=GRAY, ha='center')
-ax4.set_xlabel('Retail Price (USD)', fontsize=11, fontweight='bold', color=DARK)
-ax4.set_ylabel('Hearing Health Capability →', fontsize=11, fontweight='bold', color=DARK)
-ax4.set_title('Competitive Landscape: Where is the White Space?', fontsize=14, fontweight='bold', color=DARK, pad=10)
-ax4.spines['top'].set_visible(False)
-ax4.spines['right'].set_visible(False)
-ax4.grid(True, alpha=0.1, linestyle='--')
-ax4.tick_params(labelsize=8)
-
-# ═══════════════════════════════════
-# 6. 用户洞察（右侧）—— 单列布局，避免拥挤
-# ═══════════════════════════════════
-ax5 = fig.add_axes([0.51, 0.395, 0.46, 0.23])
-ax5.set_xlim(0, 10)
-ax5.set_ylim(0, 10)
-ax5.axis('off')
-ax5.set_title('User Insights from AI-Simulated 500 Respondents', fontsize=14, fontweight='bold', color=DARK, pad=10)
-
-# 购买意愿 - 单列显示
-ax5.text(0.5, 9.2, '1. Purchase Intent by Price (Sweet Spot: $99)', fontsize=11, fontweight='bold', color=DARK)
-prices = ['$79', '$99', '$129', '$179']
-intent_all = [68, 54, 38, 18]
-intent_hc = [82, 76, 63, 35]
-bar_x = [1.5, 3.3, 5.1, 6.9]
-bar_w = 0.55
-for i, (px, o, h) in enumerate(zip(bar_x, intent_all, intent_hc)):
-    ax5.add_patch(FancyBboxPatch((px-bar_w/2, 6.8), bar_w, o/12, boxstyle="round,pad=0.02", facecolor=BLUE, edgecolor=WHITE, linewidth=0.5, alpha=0.9))
-    ax5.add_patch(FancyBboxPatch((px+bar_w/2+0.05, 6.8), bar_w, h/12, boxstyle="round,pad=0.02", facecolor=AMBER, edgecolor=WHITE, linewidth=0.5, alpha=0.9))
-    ax5.text(px, 6.7, prices[i], fontsize=10, fontweight='bold', color=DARK, ha='center')
-    ax5.text(px, 6.8+o/12+0.15, f'{o}%', fontsize=8.5, fontweight='bold', color=BLUE, ha='center')
-    ax5.text(px+bar_w/2+0.05, 6.8+h/12+0.15, f'{h}%', fontsize=8.5, fontweight='bold', color=AMBER, ha='center')
-ax5.text(8.5, 8.7, '■ Overall', fontsize=8, color=BLUE)
-ax5.text(8.5, 8.2, '■ Hearing-Concerned', fontsize=8, color=AMBER)
-ax5.annotate('Sweet Spot\n$99', xy=(3.3, 6.8+54/12), xytext=(1.5, 8.5), fontsize=9, fontweight='bold', color=GREEN, ha='center',
+ax.annotate('★ 空白地带\n$100 预防级\n听力健康', xy=(px0+(99-30)/340*pw, py0+0.55*ph), xytext=(px0+pw*0.55, py0+ph*0.75),
+            fontproperties=cnb(9), color=GREEN, ha='center',
+            bbox=dict(boxstyle='round,pad=0.3', facecolor=WHITE, edgecolor=GREEN, alpha=0.95),
             arrowprops=dict(arrowstyle='->', color=GREEN, lw=1.5))
 
-# NPS 横向柱状图
-ax5.text(0.5, 6.2, '2. NPS by User Segment', fontsize=11, fontweight='bold', color=DARK)
-segments = ['Elderly children', 'Hearing-concerned', 'Commuter', 'Gamer', 'Student', 'Privacy-sensitive']
+# 右侧洞察
+INSIGHT_X = SCATTER_X + SCATTER_W + 0.5
+INSIGHT_W = 7.5
+draw_card(ax, INSIGHT_X, SEC_Y, INSIGHT_W, SCATTER_H, edge=TECH_BLUE)
+ax.text(INSIGHT_X+0.25, SEC_Y+SCATTER_H-0.35, '关键洞察', fontproperties=cnb(13), color=DEEP_BLUE)
+insights = [
+    ('市场格局', '高端市场已被 Apple/Sony 占据\n中低端全是纯音频功能竞争'),
+    ('核心发现', '$100 价位没有"预防性听力健康"产品\n这是被所有人忽略的空白地带'),
+    ('Soundcore 优势', '安克供应链成本优势\n可做到 $99 售价 + 60% 毛利率'),
+]
+for j, (label, text) in enumerate(insights):
+    iy = SEC_Y+SCATTER_H-0.9 - j*1.05
+    ax.text(INSIGHT_X+0.25, iy, f'· {label}', fontproperties=cnb(9), color=AMBER)
+    ax.text(INSIGHT_X+0.25, iy-0.32, text, fontproperties=cn(8.5), color=DARK)
+
+# ============================================================
+# 板块 4：用户洞察
+# ============================================================
+SEC_Y = 10.6
+HEIGHT = 4.5
+draw_section_header(ax, SEC_Y+HEIGHT-0.55, '04', '用户洞察：AI 模拟 500 人大规模调研', '联合分析 + 6 类用户替身对抗式验证 -> 定价锚点 = $99')
+
+LEFT_W = 11.5
+draw_card(ax, 0.5, SEC_Y, LEFT_W, 3.5, edge=TECH_BLUE)
+ax.text(0.8, SEC_Y+3.2, '付费意愿分布（Conjoint Analysis 模拟）', fontproperties=cnb(11), color=DEEP_BLUE)
+
+prices = ['$49', '$79', '$99', '$129', '$159', '$199']
+overall = [22, 45, 54, 35, 18, 8]
+hearing = [12, 38, 68, 48, 25, 10]
+
+bars_y0 = SEC_Y+0.7
+bars_h = 2.0
+bars_scale = bars_h / 75
+for i in range(len(prices)):
+    bx = 1.0 + i * 1.85
+    oh = overall[i] * bars_scale
+    rect = FancyBboxPatch((bx, bars_y0), 0.65, oh, boxstyle="round,pad=0.03",
+                          facecolor=LIGHT_BLUE, edgecolor=TECH_BLUE, linewidth=0.5, alpha=0.85, zorder=2)
+    ax.add_patch(rect)
+    ax.text(bx+0.32, bars_y0+oh+0.05, f'{overall[i]}%', fontproperties=cnb(8), color=TECH_BLUE, ha='center')
+    hh = hearing[i] * bars_scale
+    rect2 = FancyBboxPatch((bx+0.7, bars_y0), 0.65, hh, boxstyle="round,pad=0.03",
+                           facecolor=AMBER, edgecolor=AMBER, linewidth=0.5, alpha=0.7, zorder=2)
+    ax.add_patch(rect2)
+    ax.text(bx+1.02, bars_y0+hh+0.05, f'{hearing[i]}%', fontproperties=cnb(8), color=AMBER, ha='center')
+    ax.text(bx+0.67, bars_y0-0.15, prices[i], fontproperties=cnb(9), color=DARK, ha='center')
+
+ax.text(1.0, bars_y0+bars_h+0.25, '■ 全部用户', fontproperties=cn(8), color=TECH_BLUE)
+ax.text(3.5, bars_y0+bars_h+0.25, '■ 听力焦虑用户', fontproperties=cn(8), color=AMBER)
+
+sweet_x = 1.0 + 2*1.85 + 0.67
+sweet_y = bars_y0 + hearing[2]*bars_scale
+ax.annotate('Sweet Spot\n$99 -> 68%', xy=(sweet_x, sweet_y), xytext=(sweet_x+1.8, bars_y0+bars_h*0.75),
+            fontproperties=cnb(9), color=GREEN, ha='center',
+            arrowprops=dict(arrowstyle='->', color=GREEN, lw=1.5))
+
+# 右侧 NPS
+RIGHT_X = 0.5 + LEFT_W + 0.5
+RIGHT_W = 7.5
+draw_card(ax, RIGHT_X, SEC_Y, RIGHT_W, 3.5, edge=TECH_BLUE)
+ax.text(RIGHT_X+0.25, SEC_Y+3.2, 'NPS 按用户分群', fontproperties=cnb(11), color=DEEP_BLUE)
+
+segments = ['银发子女', '听力焦虑者', '通勤族', '游戏玩家', '学生', '隐私敏感']
 nps_vals = [72, 68, 51, 35, 28, 15]
-nps_colors = [GREEN if v >= 50 else AMBER if v >= 30 else ORANGE for v in nps_vals]
-for i, (seg, val, nc) in enumerate(zip(segments, nps_vals, nps_colors)):
-    y = 5.6 - i * 0.75
-    ax5.add_patch(FancyBboxPatch((0.5, y-0.22), val/8, 0.45, boxstyle="round,pad=0.04", facecolor=nc, edgecolor=WHITE, linewidth=0.8, alpha=0.9))
-    ax5.text(val/8 + 0.55, y, f'+{val}', fontsize=8.5, fontweight='bold', color=DARK, va='center')
-    ax5.text(0.5, y-0.35, seg, fontsize=8, color=GRAY, va='center')
-ax5.axvline(x=42/8, ymin=0.1, ymax=0.55, color=BLUE, linestyle='--', linewidth=1, alpha=0.6)
-ax5.text(5.5, 5.6, 'Overall\nNPS +42', fontsize=8, color=BLUE, fontweight='bold')
+nps_colors = [GREEN if v>=50 else AMBER if v>=30 else ORANGE for v in nps_vals]
+for i, (seg, val, col) in enumerate(zip(segments, nps_vals, nps_colors)):
+    sy = SEC_Y + 2.75 - i * 0.45
+    ax.text(RIGHT_X+0.25, sy, seg, fontproperties=cn(8.5), color=DARK, va='center')
+    bar_rect = FancyBboxPatch((RIGHT_X+1.8, sy-0.13), val/100*5.0, 0.26,
+                              boxstyle="round,pad=0.02", facecolor=col, alpha=0.85, zorder=2)
+    ax.add_patch(bar_rect)
+    ax.text(RIGHT_X+1.8+val/100*5.0+0.15, sy, f'{val}', fontproperties=cnb(9), color=col, va='center')
 
-# 功能优先级 - 只在右侧放一列，避免双列拥挤
-ax5.text(6.2, 6.2, '3. Feature Priority', fontsize=11, fontweight='bold', color=DARK)
-feats = ['Real-time SPL Monitor', 'Hearing Profile + EQ', 'Context ANC', 'Trend Report', 'Remote Family Setup', 'AI Translate']
-feat_vals = [32.4, 24.7, 18.3, 13.1, 7.2, 4.3]
-feat_colors = [BLUE, SKY, GREEN, AMBER, PURPLE, GRAY]
-for i, (f, v, fc) in enumerate(zip(feats, feat_vals, feat_colors)):
-    y = 5.6 - i * 0.75
-    ax5.add_patch(FancyBboxPatch((6.2, y-0.22), v/4.2, 0.45, boxstyle="round,pad=0.04", facecolor=fc, edgecolor=WHITE, linewidth=0.8, alpha=0.9))
-    ax5.text(6.2 + v/4.2 + 0.15, y, f'{v}%', fontsize=8.5, fontweight='bold', color=DARK, va='center')
-    ax5.text(6.2, y-0.35, f, fontsize=7.5, color=GRAY, va='center')
+ax.text(RIGHT_X+0.25, SEC_Y+0.25, '· 核心发现：用户不要助听器，他们要"不戴助听器的安全感"',
+        fontproperties=cnb(8.5), color=DEEP_BLUE)
 
-# ═══════════════════════════════════
-# 7. 技术架构（左侧）
-# ═══════════════════════════════════
-ax6 = fig.add_axes([0.03, 0.07, 0.45, 0.31])
-ax6.set_xlim(0, 12)
-ax6.set_ylim(0, 10)
-ax6.axis('off')
-ax6.set_title('Technical Architecture: Built on Soundcore\'s Thus™ AI Chip', fontsize=14, fontweight='bold', color=DARK, pad=10)
+# ============================================================
+# 板块 5：技术架构
+# ============================================================
+SEC_Y = 5.9
+HEIGHT = 4.2
+draw_section_header(ax, SEC_Y+HEIGHT-0.55, '05', '技术架构：Thus AI Chip + 三层推理', '本地 AI 推理保障隐私，云端持续学习形成数据飞轮')
 
-sensors = [('Dual MEMS Mics\n(Ambient + In-ear)', BLUE, 2.5), ('Bone Conduction\nSensors ×2', SKY, 6.0), ('IR In-ear\nDetection', GREEN, 9.5)]
-for label, color, x in sensors:
-    ax6.add_patch(FancyBboxPatch((x-1.2, 8.6), 2.4, 1.0, boxstyle="round,pad=0.08", facecolor=color, edgecolor=WHITE, linewidth=1.5, alpha=0.9))
-    ax6.text(x, 9.1, label, ha='center', va='center', fontsize=8, fontweight='bold', color=WHITE)
-    ax6.annotate('', xy=(x, 8.45), xytext=(x, 8.55), arrowprops=dict(arrowstyle='->', color=DARK, lw=1.2))
+layers = [
+    ('感知层', ['双麦阵列 + 骨传导', 'PPG 心率 + 血氧', 'IMU 运动姿态', 'SPL 实时监测'], LIGHT_BLUE),
+    ('推理层', ['Thus AI 芯片', '本地推理 <50ms', '功耗 <5mW', '片上听力模型'], TECH_BLUE),
+    ('应用层', ['个性化听力报告', '安全音量建议', '环境噪声预警', '云端飞轮训练'], DEEP_BLUE),
+]
+for li, (layer_name, items, color) in enumerate(layers):
+    lx = 0.5 + li * 6.5
+    lw = 6.0
+    lh = 2.0
+    ly = SEC_Y + 1.0
+    draw_card(ax, lx, ly, lw, lh, edge=color)
+    ax.add_patch(FancyBboxPatch((lx, ly+lh-0.4), lw, 0.4,
+                 boxstyle="round,pad=0.02", facecolor=color, edgecolor=color, zorder=2))
+    ax.text(lx+lw/2, ly+lh-0.2, layer_name, fontproperties=cnb(11), color=WHITE, ha='center', va='center')
+    for ii, item in enumerate(items):
+        ix = lx + 0.2 + (ii % 2) * (lw/2)
+        iy = ly+lh - 0.75 - (ii // 2) * 0.55
+        ax.text(ix, iy, f'· {item}', fontproperties=cn(8.5), color=DARK)
+    if li < len(layers)-1:
+        ax.annotate('', xy=(lx+lw+0.35, ly+lh/2), xytext=(lx+lw, ly+lh/2),
+                    arrowprops=dict(arrowstyle='->', color=GRAY, lw=2))
 
-ax6.text(6, 8.5, '10-Sensor Fusion', fontsize=7.5, color=GRAY, ha='center', style='italic')
-ax6.add_patch(FancyBboxPatch((1.0, 6.2), 10, 1.6, boxstyle="round,pad=0.12", facecolor='#1E293B', edgecolor=BLUE, linewidth=2))
-ax6.text(6, 7.4, 'Low-Power DSP Co-processor', fontsize=12, fontweight='bold', color=WHITE, ha='center')
-ax6.text(6, 6.7, 'Always-on SPL Estimation (<0.5mA)  |  Noise Classification  |  Alert Logic  |  A-Weighting', fontsize=8, color='#93C5FD', ha='center')
-ax6.annotate('', xy=(6, 6.05), xytext=(6, 6.15), arrowprops=dict(arrowstyle='->', color=DARK, lw=1.5))
+# 技术指标
+metrics_data = [
+    ('<5 mW', '芯片功耗', TECH_BLUE),
+    ('<50 ms', '推理延迟', TECH_BLUE),
+    ('本地推理', '隐私保护', GREEN),
+    ('24/7', '持续监测', TECH_BLUE),
+    ('60%+', '毛利率', GREEN),
+]
+for mi, (val, label, col) in enumerate(metrics_data):
+    mx = 0.6 + mi * 3.9
+    draw_metric_card(ax, mx, SEC_Y-0.5, 3.5, 1.3, val, label, col)
 
-ax6.add_patch(FancyBboxPatch((1.0, 2.8), 10, 2.9, boxstyle="round,pad=0.12", facecolor=BLUE, edgecolor=WHITE, linewidth=2.5))
-ax6.text(6, 5.15, 'Thus™ AI Chip (CIM Architecture)', fontsize=13, fontweight='bold', color=WHITE, ha='center')
-ax6.text(6, 4.4, 'Dynamic EQ (DNN)  |  Context ANC 4.0  |  Hearing Profile Engine  |  Bluetooth 6.1', fontsize=8, color='#BFDBFE', ha='center')
-ax6.text(6, 3.85, '10-Sensor Fusion  |  On-Device Privacy — No Audio Uploaded', fontsize=8, color='#BFDBFE', ha='center')
-ax6.annotate('', xy=(6, 2.65), xytext=(6, 2.75), arrowprops=dict(arrowstyle='->', color=DARK, lw=1.5))
+# ============================================================
+# 板块 6：商业飞轮
+# ============================================================
+SEC_Y = 2.1
+HEIGHT = 3.6
+draw_section_header(ax, SEC_Y+HEIGHT-0.55, '06', '商业飞轮：数据即护城河', '越多人使用 -> 听力模型越精准 -> 产品价值越高 -> 越多人选择')
 
-outs = [('Real-time\nHearing Protection', GREEN, 2.5), ('Personalized\nAudio Profile', AMBER, 6.0), ('Context\nAwareness', PURPLE, 9.5)]
-for label, color, x in outs:
-    ax6.add_patch(FancyBboxPatch((x-1.2, 1.3), 2.4, 0.95, boxstyle="round,pad=0.06", facecolor=color, edgecolor=WHITE, linewidth=1.5, alpha=0.9))
-    ax6.text(x, 1.77, label, ha='center', va='center', fontsize=8, fontweight='bold', color=WHITE)
+# 左侧飞轮 - 横向四步骤
+FLY_X, FLY_W = 0.5, 8.5
+FLY_H = 1.8
+FLY_Y = SEC_Y + 0.5
+draw_card(ax, FLY_X, FLY_Y, FLY_W, FLY_H, edge=TECH_BLUE)
 
-# ═══════════════════════════════════
-# 8. 商业模式（右侧）
-# ═══════════════════════════════════
-ax7 = fig.add_axes([0.51, 0.07, 0.46, 0.31])
-ax7.set_xlim(0, 10)
-ax7.set_ylim(0, 10)
-ax7.axis('off')
-ax7.set_title('Business Model: Hardware + Subscription + Data Flywheel', fontsize=14, fontweight='bold', color=DARK, pad=10)
+fly_steps = [
+    ('用户佩戴', '持续积累'),
+    ('听力数据', '每日百万级'),
+    ('AI 模型', '精度提升'),
+    ('个性化守护', '口碑传播'),
+]
+fly_cols = [LIGHT_BLUE, TECH_BLUE, DEEP_BLUE, GREEN]
+box_w = 1.8
+for i, ((title, sub), col) in enumerate(zip(fly_steps, fly_cols)):
+    bx = FLY_X + 0.3 + i * (box_w + 0.25)
+    draw_card(ax, bx, FLY_Y+0.2, box_w, 1.35, color=col, edge=col)
+    ax.text(bx+box_w/2, FLY_Y+0.95, title, fontproperties=cnb(9), color=WHITE, ha='center', va='center')
+    ax.text(bx+box_w/2, FLY_Y+0.5, sub, fontproperties=cn(7.5), color=WHITE, ha='center', va='center')
+    if i < len(fly_steps)-1:
+        ax.annotate('', xy=(bx+box_w+0.25, FLY_Y+0.875), xytext=(bx+box_w, FLY_Y+0.875),
+                    arrowprops=dict(arrowstyle='->', color=GRAY, lw=1.5))
 
-ax7.text(5, 9.2, '3-Year Revenue Forecast (Base Case)', fontsize=11, fontweight='bold', color=DARK, ha='center')
-years = ['Year 1', 'Year 2', 'Year 3']
-hw = [55, 88, 132]
-sub = [1.9, 5.5, 11.5]
-for i, (yr, h, s) in enumerate(zip(years, hw, sub)):
-    x = 1.6 + i * 2.8
-    ax7.add_patch(FancyBboxPatch((x-0.8, 5.5), 1.6, h/15, boxstyle="round,pad=0.04", facecolor=BLUE, edgecolor=WHITE, linewidth=0.8, alpha=0.9))
-    ax7.add_patch(FancyBboxPatch((x-0.8, 5.5+h/15), 1.6, s/15, boxstyle="round,pad=0.04", facecolor=AMBER, edgecolor=WHITE, linewidth=0.8, alpha=0.9))
-    ax7.text(x, 5.5+(h+s)/15+0.2, f'${h+s:.0f}M', fontsize=9, fontweight='bold', color=DARK, ha='center')
-    ax7.text(x, 5.2, yr, fontsize=10, fontweight='bold', color=DARK, ha='center')
-ax7.text(8.5, 8.7, '■ Hardware', fontsize=8, color=BLUE)
-ax7.text(8.5, 8.2, '■ Subscription', fontsize=8, color=AMBER)
+# 右侧财务预测
+FIN_X = FLY_X + FLY_W + 0.5
+FIN_W = 10.5
+FIN_Y = SEC_Y + 0.5
+FIN_H = 1.8
+draw_card(ax, FIN_X, FIN_Y, FIN_W, FIN_H, edge=TECH_BLUE)
+ax.text(FIN_X+0.25, FIN_Y+FIN_H-0.3, '财务模型摘要', fontproperties=cnb(11), color=DEEP_BLUE)
+fin_items = [
+    ('BOM 成本', '$32–42', '芯片+声学+电池+结构'),
+    ('定价', '$99–129', '2.5-3x 成本倍率'),
+    ('毛利率', '60%+', '硬件利润健康'),
+    ('Year 1', '50 万台', '收入 $50-65M'),
+    ('Year 3', '500 万台', '收入 $500M+'),
+    ('LTV/CAC', '10.4x', '口碑驱动低获客'),
+]
+for fi, (label, val, note) in enumerate(fin_items):
+    col_idx = fi // 3
+    row_idx = fi % 3
+    col_x = FIN_X + 0.3 + col_idx * 5.2
+    row_y = FIN_Y + FIN_H - 0.55 - row_idx * 0.48
+    ax.text(col_x, row_y, label, fontproperties=cnb(8.5), color=DARK)
+    ax.text(col_x+1.5, row_y, val, fontproperties=cnb(9), color=TECH_BLUE)
+    ax.text(col_x+2.8, row_y, note, fontproperties=cn(7), color=GRAY)
 
-ax7.text(5, 4.8, 'Unit Economics', fontsize=11, fontweight='bold', color=DARK, ha='center')
-kpis = [('CAC', '$14', BLUE), ('HW Margin\n(Pro)', '27%', SKY), ('Sub ARPU\n/yr', '$36', AMBER), ('3-Year\nLTV', '$146', GREEN), ('LTV / CAC', '10.4×', PURPLE)]
-for i, (label, val, color) in enumerate(kpis):
-    x = 1.0 + i * 1.8
-    ax7.add_patch(FancyBboxPatch((x-0.75, 3.2), 1.5, 1.2, boxstyle="round,pad=0.08", facecolor=color, edgecolor=WHITE, linewidth=1.5, alpha=0.1))
-    ax7.text(x, 3.85, val, fontsize=15, fontweight='bold', color=color, ha='center')
-    ax7.text(x, 3.35, label, fontsize=7, color=DARK, ha='center')
+# ============================================================
+# 底部结论栏
+# ============================================================
+ax.add_patch(plt.Rectangle((0, 0), FIG_W, 0.45, facecolor=DEEP_BLUE, zorder=3))
+ax.text(FIG_W/2, 0.22, '用 AI 原生产品设计方法，把创新从「猜」变成了「发现」—— 传统方法产出参数竞赛，AI 方法产出品类定义',
+        fontproperties=cnb(9), color=WHITE, ha='center', va='center')
 
-ax7.text(5, 2.7, 'The Moat: Data Flywheel', fontsize=11, fontweight='bold', color=DARK, ha='center')
-fw_items = ['Users wear\nGuard daily', 'Hearing profile\ngets more accurate', 'Switching\ncost rises', 'Users stay\n& recommend']
-fw_colors = [BLUE, SKY, GREEN, AMBER]
-for i, (item, fc) in enumerate(zip(fw_items, fw_colors)):
-    x = 1.2 + i * 2.2
-    ax7.add_patch(FancyBboxPatch((x-0.95, 0.8), 1.9, 1.5, boxstyle="round,pad=0.1", facecolor=fc, edgecolor=WHITE, linewidth=1.5, alpha=0.85))
-    ax7.text(x, 1.55, item, ha='center', va='center', fontsize=8, fontweight='bold', color=WHITE)
-    if i < 3:
-        ax7.annotate('', xy=(x+1.05, 1.55), xytext=(x+0.95, 1.55), arrowprops=dict(arrowstyle='->', color=DARK, lw=1.5))
-ax7.text(0.9, 1.8, '↻', fontsize=24, color=GRAY, ha='center')
-
-# ═══════════════════════════════════
-# 9. 底部信息条
-# ═══════════════════════════════════
-ax.add_patch(FancyBboxPatch((0.5, 0.2), 23, 0.55, boxstyle="round,pad=0.06", facecolor=WHITE, edgecolor='#E5E7EB', linewidth=1))
-ax.text(12, 0.47, 'Soundcore Guard — AI-Native Product Design Experiment  |  Method: Expand → Challenge → Converge  |  All data anchored to public sources  |  Hearing wellness — not a medical device',
-        fontsize=8, color=GRAY, ha='center')
-
+# ============================================================
 # 保存
-output_path = f'{OUT}/soundcore-guard-poster.png'
-fig.savefig(output_path, facecolor=LIGHT, dpi=200)
-plt.close()
+# ============================================================
+output_path = '/workspace/soundcore-guard-ai-design/assets/charts/soundcore-guard-poster.png'
+fig.savefig(output_path, dpi=150, bbox_inches='tight', facecolor=BG, edgecolor='none')
+plt.close(fig)
+
+import os
 size_kb = os.path.getsize(output_path) / 1024
-print(f'✅ 最终数据海报已生成')
-print(f'   路径: {output_path}')
-print(f'   大小: {size_kb:.0f} KB')
+print(f'✅ 海报已生成\n   路径: {output_path}\n   大小: {size_kb:.0f} KB')
