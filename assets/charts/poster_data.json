@@ -1,0 +1,272 @@
+{
+  "_description": "Soundcore Guard AI 原生产品设计海报 — 全量结构化数据，可直接被 LLM 解析用于绘图",
+  "_layout": "竖版长图，宽 20 英寸 × 高 58 英寸，从上到下 7 个板块依次展开",
+  "_color_scheme": {
+    "deep_blue": "#1a237e",
+    "tech_blue": "#1976D2",
+    "light_blue": "#42A5F5",
+    "sky_blue": "#BBDEFB",
+    "amber": "#FF8F00",
+    "green": "#2E7D32",
+    "light_green": "#81C784",
+    "orange": "#E65100",
+    "red": "#C62828",
+    "dark": "#212121",
+    "gray": "#616161",
+    "light_gray": "#BDBDBD",
+    "bg": "#F5F7FA",
+    "white": "#FFFFFF"
+  },
+  "_fonts": {
+    "cn_regular": "Noto Sans CJK SC (思源黑体简体)",
+    "cn_bold": "Noto Sans CJK SC Bold",
+    "en": "Helvetica / system sans-serif"
+  },
+
+  "header": {
+    "brand_line": "SOUNDCORE × AI-NATIVE PRODUCT DESIGN",
+    "main_title": "不止听歌——你的个人听觉管家",
+    "subtitle": "AI 原生产品设计方法 × Soundcore Guard 预防性听力守护 TWS 耳机",
+    "key_metrics": [
+      {"value": "5", "label": "AI 发现的市场信号"},
+      {"value": "500", "label": "模拟用户调研样本"},
+      {"value": "$99", "label": "Sweet Spot 定价"}
+    ],
+    "bg_color": "#1a237e",
+    "height_ratio": "4/58"
+  },
+
+  "sections": [
+    {
+      "id": 1,
+      "number": "01",
+      "cn_title": "核心命题：方法改变答案",
+      "en_subtitle": "同一个命题，两种方法，两个完全不同的方案",
+      "chart_type": "comparison_cards",
+      "data": {
+        "method_a": {
+          "label": "传统经验驱动方法",
+          "product": "Soundcore Pro：更好的降噪 + AI 翻译",
+          "nature": "Me-too 跟随策略",
+          "nature_color": "red",
+          "pricing": "$149–179",
+          "differentiation": "差异化靠参数（可被追上）",
+          "decision": "PM 个人经验 + 竞品对标"
+        },
+        "method_b": {
+          "label": "AI 原生方法",
+          "product": "Soundcore Guard：平价预防性听力守护",
+          "nature": "品类创新 — 开拓新赛道",
+          "nature_color": "green",
+          "pricing": "$99–129",
+          "differentiation": "差异化靠数据飞轮（越用越准）",
+          "decision": "AI 智囊 → AI 用户替身 → AI 专家团 → 人类 PM"
+        }
+      },
+      "workflow": [
+        "AI 智囊：全网信号发现",
+        "AI 替身：500 用户模拟",
+        "AI 专家：可行性评估",
+        "人类 PM：裁决 + 压测",
+        "产品：方案输出"
+      ]
+    },
+
+    {
+      "id": 2,
+      "number": "02",
+      "cn_title": "五大信号 → 被忽视的市场空白",
+      "en_subtitle": "AI 智囊从全网数据中发现的 5 个关键信号，传统经验方法全部遗漏",
+      "chart_type": "metric_cards",
+      "data": {
+        "signals": [
+          {
+            "title": "全球听力危机",
+            "value": "12 亿",
+            "unit": "人面临听力损失风险",
+            "detail": "WHO 2024：全球 1/4 人口 2050 年前将出现听力问题"
+          },
+          {
+            "title": "健康音频崛起",
+            "value": "23%",
+            "unit": "CAGR",
+            "detail": "传统降噪/音质赛道拥挤，"健康音频"增速远超整体"
+          },
+          {
+            "title": "Apple 验证赛道",
+            "value": "$249+",
+            "unit": "仅高端覆盖",
+            "detail": "AirPods Pro 2 获 FDA 助听认证，大众 $100 价位完全空白"
+          },
+          {
+            "title": "Z 世代健康焦虑",
+            "value": "+180%",
+            "unit": "搜索增长",
+            "detail": "年轻人从"被动修复"转向"主动预防"听力损伤"
+          },
+          {
+            "title": "听力 App 缺硬件",
+            "value": "8000 万",
+            "unit": "年下载量",
+            "detail": "听力检测 App 年下载 8000 万次，纯软件无法持续监测"
+          }
+        ]
+      }
+    },
+
+    {
+      "id": 3,
+      "number": "03",
+      "cn_title": "竞品定位：$100 预防级听力健康 = 真空地带",
+      "en_subtitle": "没有品牌在平价区间提供预防性听力健康功能",
+      "chart_type": "scatter_plot",
+      "data": {
+        "x_axis": {"label": "价格 ($)", "range": [50, 350]},
+        "y_axis": {"label": "听力健康深度", "range": [0, 1], "ticks": ["无", "中等", "临床级"]},
+        "competitors": [
+          {"name": "杂牌耳机", "price": 50, "depth": 0.03, "color": "gray"},
+          {"name": "Sony WF", "price": 279, "depth": 0.05, "color": "gray"},
+          {"name": "Samsung Buds", "price": 199, "depth": 0.2, "color": "gray"},
+          {"name": "Apple AirPods Pro 2", "price": 249, "depth": 0.95, "color": "dark", "note": "FDA 认证助听"},
+          {"name": "Bose QC", "price": 350, "depth": 0.9, "color": "gray"},
+          {"name": "Soundcore Guard", "price": 99, "depth": 0.58, "color": "tech_blue", "highlight": true}
+        ],
+        "annotation": {
+          "text": "★ 战略空白：$100 预防级听力健康",
+          "x": 99,
+          "y": 0.58
+        },
+        "conclusions": [
+          "高端市场：Apple/Sony 垄断，$200+ 区间有临床功能",
+          "中低端市场：纯音频竞争，没有任何听力健康功能",
+          "战略机会：$99–129 + 预防级听力健康 = 蓝海"
+        ]
+      }
+    },
+
+    {
+      "id": 4,
+      "number": "04",
+      "cn_title": "用户洞察：AI 模拟 500 人大规模调研",
+      "en_subtitle": "联合分析 + 6 类用户替身对抗式验证 → 定价锚点锁定 $99",
+      "chart_type": "grouped_bar + horizontal_bar",
+      "data": {
+        "conjoint_analysis": {
+          "method": "Conjoint Analysis 模拟",
+          "prices": ["$49", "$79", "$99", "$129", "$159", "$199"],
+          "overall_willingness": [22, 45, 54, 35, 18, 8],
+          "hearing_concerned_willingness": [12, 38, 68, 48, 25, 10],
+          "overall_label": "全部用户 (n=500)",
+          "hearing_label": "听力焦虑用户 (n=180)",
+          "sweet_spot": {"price": "$99", "willingness": "68%"}
+        },
+        "nps": {
+          "segments": [
+            {"name": "银发子女", "nps": 72, "color": "green"},
+            {"name": "听力焦虑者", "nps": 68, "color": "green"},
+            {"name": "通勤族", "nps": 51, "color": "green"},
+            {"name": "游戏玩家", "nps": 35, "color": "amber"},
+            {"name": "学生", "nps": 28, "color": "orange"},
+            {"name": "隐私敏感", "nps": 15, "color": "orange"}
+          ],
+          "color_rules": ">=50 green, >=30 amber, <30 orange"
+        },
+        "core_insight": "用户不要"助听器"，他们要"不戴助听器的安全感""
+      }
+    },
+
+    {
+      "id": 5,
+      "number": "05",
+      "cn_title": "技术架构：Thus AI Chip + 三层推理系统",
+      "en_subtitle": "本地 AI 推理保障隐私，云端持续学习形成数据飞轮护城河",
+      "chart_type": "three_column_cards + metric_cards",
+      "data": {
+        "layers": [
+          {
+            "name": "感知层",
+            "color": "light_blue",
+            "bg": "sky_blue",
+            "items": [
+              "双麦阵列 + 骨传导传感器",
+              "PPG 心率 + 血氧监测",
+              "IMU 运动姿态感知",
+              "SPL 声压级实时监测"
+            ]
+          },
+          {
+            "name": "推理层",
+            "color": "tech_blue",
+            "bg": "#E3F2FD",
+            "items": [
+              "Thus AI 专用芯片",
+              "本地推理延迟 < 50ms",
+              "芯片功耗 < 5mW",
+              "片上听力评估模型"
+            ]
+          },
+          {
+            "name": "应用层",
+            "color": "deep_blue",
+            "bg": "#E8EAF6",
+            "items": [
+              "个性化听力健康报告",
+              "安全音量实时建议",
+              "环境噪声智能预警",
+              "云端飞轮持续优化"
+            ]
+          }
+        ],
+        "key_metrics": [
+          {"value": "< 5 mW", "label": "芯片功耗", "note": "超低功耗设计"},
+          {"value": "< 50 ms", "label": "推理延迟", "note": "实时本地响应"},
+          {"value": "本地推理", "label": "隐私保护", "note": "数据不出设备"},
+          {"value": "24/7", "label": "持续监测", "note": "全天候守护"},
+          {"value": "60%+", "label": "毛利率", "note": "健康商业模型"}
+        ]
+      }
+    },
+
+    {
+      "id": 6,
+      "number": "06",
+      "cn_title": "商业飞轮：数据即护城河",
+      "en_subtitle": "越多人使用 → 听力模型越精准 → 产品价值越高 → 越多人选择",
+      "chart_type": "horizontal_flywheel + financial_table",
+      "data": {
+        "flywheel_steps": [
+          {"label": "用户佩戴\n持续积累听力数据", "color": "light_blue"},
+          {"label": "AI 模型\n精度持续提升", "color": "tech_blue"},
+          {"label": "个性化守护\n体验差异化", "color": "deep_blue"},
+          {"label": "口碑传播\n获客成本趋零", "color": "green"}
+        ],
+        "financials": [
+          {"label": "BOM 成本", "value": "$32–42", "note": "芯片+声学+电池"},
+          {"label": "零售定价", "value": "$99–129", "note": "2.5-3x 倍率"},
+          {"label": "毛利率", "value": "60%+", "note": "硬件利润健康"},
+          {"label": "Year 1", "value": "50 万台", "note": "收入 $50–65M"},
+          {"label": "Year 3", "value": "500 万台", "note": "收入 $500M+"},
+          {"label": "LTV/CAC", "value": "10.4x", "note": "口碑驱动增长"}
+        ]
+      }
+    }
+  ],
+
+  "bottom_bar": {
+    "title": "结论",
+    "main_text": "用 AI 原生产品设计方法，把创新从「猜」变成了「发现」",
+    "comparison": "传统经验方法 → 参数竞赛（降噪多 3dB）\nAI 原生方法 → 品类定义（$100 听力守护新赛道，数据飞轮护城河）",
+    "footer": "Soundcore Guard — AI-Native Product Design — 2024",
+    "bg_color": "#1a237e"
+  },
+
+  "_visual_style_guide": {
+    "cards": "圆角卡片，圆角半径约 0.15 英寸，边框 0.8px",
+    "section_headers": "编号圆（深蓝底白字）+ 中文大标题（22pt 粗体深蓝）+ 英文副标题（11pt 灰色）+ 底部浅灰分隔线",
+    "metric_cards": "白底彩色边框，大号数值（24pt 粗体彩色）+ 标签（10pt）+ 小字注释（8pt 灰色）",
+    "bar_charts": "分组柱状图，浅蓝（全部用户）和琥珀（听力焦虑用户），圆角柱形",
+    "scatter": "圆形散点，Soundcore Guard 用大号标记并高亮",
+    "flywheel": "横向四个彩色方块，之间用箭头连接",
+    "spacing": "板块之间有充足留白，标题和内容之间留白约 0.5 英寸"
+  }
+}
