@@ -47,9 +47,9 @@
 
 ![Soundcore Guard Infographic](assets/charts/soundcore-guard-poster.png)
 
-**海报包含 7 大叙事模块**：核心问题 · 方法改变答案 · 五类机会信号 · 竞品矩阵 · 用户洞察 · 技术架构 · 商业与飞轮模型
+**海报包含 5 大叙事模块**：全球信号 · 市场空白 · 用户验证 · 商业验证 · 关键洞察
 
-> 生成脚本：`assets/charts/generate_poster.py`（可复现）
+> 源文件：`assets/charts/soundcore-guard-poster.png`
 
 ---
 
